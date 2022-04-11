@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace lesson1
 {
@@ -20,10 +10,25 @@ namespace lesson1
     /// </summary>
     public partial class MainWindow : Window
     {
-        private long fiboNumfirst
+        private long fiboNumber = 0;
         public MainWindow()
         {
             InitializeComponent();
+            Foo();
         }
+        public void Foo()
+        {
+            Thread.Sleep(200);
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+            new Action(() =>
+            {
+                fiboText.Text = fib(fiboNumber++);
+            }));
+        }
+        static long fib(long n)
+        {
+            return n > 1 ? fib(n - 1) + fib(n - 2) : n;
+        }
+
     }
 }
