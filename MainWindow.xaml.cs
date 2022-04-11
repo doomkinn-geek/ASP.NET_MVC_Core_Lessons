@@ -20,6 +20,7 @@ namespace lesson1
     /// </summary>
     public partial class MainWindow : Window
     {
+        private long fiboNumfirst
         public MainWindow()
         {
             InitializeComponent();
