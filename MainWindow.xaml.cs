@@ -10,24 +10,52 @@ namespace lesson1
     /// </summary>
     public partial class MainWindow : Window
     {
-        private long fiboNumber = 0;
+        private static long fiboLast = 0;
+        private static long fiboPreLast = 0;
+        private static long fiboPrePreLast = 0;
+
         public MainWindow()
         {
             InitializeComponent();
-            Foo();
+            fiboText.Text = "HELLO";
+            Thread f = new Thread(Foo);
+            f.Start();
         }
         public void Foo()
-        {
-            Thread.Sleep(200);
+        {            
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
             new Action(() =>
             {
-                fiboText.Text = fib(fiboNumber++);
+                while (true)
+                {                    
+                    fiboText.Text = FiboNext().ToString();
+                    Thread.Sleep(1000);
+                }
             }));
         }
-        static long fib(long n)
+        static long FiboNext()
         {
-            return n > 1 ? fib(n - 1) + fib(n - 2) : n;
+            long fiboNumber = 0, fiboNext = 0;
+            if (fiboLast == 0)
+            {
+                fiboNext = 1;
+                fiboLast = 1;
+                fiboPreLast = 1;
+            }
+            else if (fiboPreLast == 0)
+            {
+                fiboPreLast = 1;
+                fiboPrePreLast = 1;
+                fiboNext = 1;
+            }
+            else
+            {
+                fiboNext = fiboPreLast + fiboLast;
+                fiboPrePreLast = fiboPreLast;
+                fiboPreLast = fiboLast;
+                fiboLast = fiboNext;
+            }
+            return fiboNext;
         }
 
     }
