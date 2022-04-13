@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -10,30 +11,26 @@ namespace lesson1
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static long fiboLast = 0;
-        private static long fiboPreLast = 0;
-        private static long fiboPrePreLast = 0;
+        private long fiboLast = 0;
+        private long fiboPreLast = 0;
+        private long fiboPrePreLast = 0;
 
         public MainWindow()
         {
-            InitializeComponent();
-            fiboText.Text = "HELLO";
-            Thread f = new Thread(Foo);
-            f.Start();
+            InitializeComponent();            
         }
         public void Foo()
         {            
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-            new Action(() =>
+            for (int i = 0; i < 1000; i++)
             {
-                while (true)
-                {                    
-                    fiboText.Text = FiboNext().ToString();
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                {
                     Thread.Sleep(1000);
-                }
-            }));
+                    fiboText.Text = FiboNext().ToString();
+                }));
+            }
         }
-        static long FiboNext()
+        private long FiboNext()
         {
             long fiboNumber = 0, fiboNext = 0;
             if (fiboLast == 0)
@@ -56,7 +53,10 @@ namespace lesson1
                 fiboLast = fiboNext;
             }
             return fiboNext;
+        }       
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
+        {          
+            new Thread(Foo).Start();
         }
-
     }
 }

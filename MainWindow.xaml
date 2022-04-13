@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:lesson1"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <TextBlock x:Name="fiboText" Height="20" Width="50"></TextBlock>
+    <Grid Loaded="Grid_Loaded">
+        <TextBlock x:Name="fiboText" Height="20"></TextBlock>
     </Grid>
 </Window>
