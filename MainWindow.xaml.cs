@@ -15,19 +15,25 @@ namespace lesson1
         private long fiboPreLast = 0;
         private long fiboPrePreLast = 0;
 
+        private static object lockObj = new object();
+        private int interval = 1000;
+
         public MainWindow()
         {
             InitializeComponent();            
         }
         public void Foo()
-        {            
-            for (int i = 0; i < 1000; i++)
+        {
+            lock (lockObj)
             {
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                for (int i = 0; i < 1000; i++)
                 {
-                    Thread.Sleep(1000);
-                    fiboText.Text = FiboNext().ToString();
-                }));
+                    this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                    {
+                        Thread.Sleep(interval);
+                        fiboText.Text = FiboNext().ToString();
+                    }));
+                }
             }
         }
         private long FiboNext()
@@ -57,6 +63,18 @@ namespace lesson1
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {          
             new Thread(Foo).Start();
+        }
+
+        private void intervalText_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {            
+            lock(lockObj)
+            {
+                int seconds;
+                if(int.TryParse(intervalText.Text.ToString(), out seconds))
+                {
+                    interval = 1000 * seconds;
+                }                
+            }
         }
     }
 }
