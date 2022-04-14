@@ -22,6 +22,7 @@ namespace lesson1
                 }                
             }
         }
+        public object Lock => _lock;
 
         public bool IsReadOnly => false;
 
