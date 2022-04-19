@@ -13,8 +13,7 @@ using (var pool = new SimplePool(7))
     });
 
     for (var i = 0; i < 40; ++i)
-    {
-        var i1 = i;
-        pool.QueueTask(() => randomizer(i1));
+    {        
+        pool.QueueTask(() => randomizer(i));
     }
 }
