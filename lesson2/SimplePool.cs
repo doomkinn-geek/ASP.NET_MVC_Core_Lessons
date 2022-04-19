@@ -52,10 +52,10 @@ namespace lesson2
         {
             lock (this._tasks)
             {
-                if (this._disallowAdd) { throw new InvalidOperationException("Данный поток в процессе уничтожения. Невозможно запустить операцию снова"); }
+                if (this._disallowAdd) { throw new InvalidOperationException("Данный поток в процессе уничтожения. Невозможно запустить операцию"); }
                 if (this._disposed) { throw new ObjectDisposedException("Данный поток уже был уничтожен"); }
                 this._tasks.AddLast(task);
-                Monitor.PulseAll(this._tasks); // pulse because tasks count changed
+                Monitor.PulseAll(this._tasks);
             }
         }
 
